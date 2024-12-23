@@ -154,7 +154,7 @@ def parseValues(data):
                 if len(dictionary[v]) == 16:
                     raw = struct.unpack('<2iq', dictionary[v])
                     ua_type = 0
-                    KEYS.append({'Name': getName(v), 'Path': v, 'Session ID': raw[0], 'Count': raw[1],
+                    KEYS.append({ 'Path': v, 'Session ID': raw[0], 'Count': raw[1],
                                 'Last Used Date (UTC)': raw[2], 'Focus Time (ms)': '', 'Focus Count': ''})
                 # Win7 based UA keys are 72 bytes
                 elif len(dictionary[v]) == 72:
