@@ -162,8 +162,15 @@ def parseValues(data):
                     ua_type = 1
                     FTHR = convertFocusTimetoHumanReadable(raw[3])
                     N_value_current_session = raw[1]*launch_avg+raw[2]*switch_avg+raw[3] # app's N values for current session
-                    R0_value_current_session = N_value_current_session/N_value_of_most_used_app # app's R0 value for current session [R0 value = N Value of the App / N Value of the Most Used App in the session (NMAX Entry 3)]
-                    session_usage_perc = N_value_current_session / ueme_session['stats']['Total User Time'] # Just curious calculation for the usage in regards of the total user time
+                    try:
+                        R0_value_current_session = N_value_current_session/N_value_of_most_used_app # app's R0 value for current session [R0 value = N Value of the App / N Value of the Most Used App in the session (NMAX Entry 3)]
+                    except:
+                        R0_value_current_session = 0
+                    try:
+                        session_usage_perc = N_value_current_session / ueme_session['stats']['Total User Time'] # Just curious calculation for the usage in regards of the total user time
+                    except:
+                        session_usage_perc = 0
+                    
                     KEYS.append({'GUID':working_guid, 'Path': v, 'Session ID': raw[0], 'Run Count': raw[1],
                                 'Focus Count': raw[2], 'Focus Time (ms)': raw[3], 'Focus Time (Human-Readable)': f'{FTHR[0]}d, {FTHR[1]}h, {FTHR[2]}m, {FTHR[3]}s, {FTHR[4]}ms','Last Used Date (UTC)': filetime_to_datetime(raw[15]),
                                 'N Value of current session': N_value_current_session, 'R0 Value of current session': R0_value_current_session, 'Total Usage Percentage': session_usage_perc,'Rewrite Counter': raw[14],
